@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ShieldAlert,
-  ShieldCheck,
-  Play,
-  Pause,
-  Radio,
-  Sparkles,
-  Volume2,
-  Activity,
-  AlertTriangle,
-  ArrowDown,
-  CheckCircle2,
-} from 'lucide-react';
+import { Play, Pause, Heart, Volume2 } from 'lucide-react';
 import { WaveformVisualizer } from '../common/WaveformVisualizer';
 import { VoiceVerdict } from '../../types';
 
@@ -28,223 +16,364 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenHowItWorks,
   isAnalyzing,
 }) => {
-  const [isPlayingPreview, setIsPlayingPreview] = useState(false);
-  const [activePreviewType, setActivePreviewType] = useState<'real' | 'cloned'>('cloned');
+  const [isPlayingSample, setIsPlayingSample] = useState(true);
+  const [isLiked, setIsLiked] = useState(false);
+  const [activeSampleType, setActiveSampleType] = useState<'real' | 'cloned'>('cloned');
 
-  const togglePreview = (type: 'real' | 'cloned') => {
-    setActivePreviewType(type);
-    setIsPlayingPreview(!isPlayingPreview || activePreviewType !== type);
+  const handleButtonPress = (type: VoiceVerdict) => {
+    setActiveSampleType(type === 'Real' ? 'real' : 'cloned');
+    onQuickTestSample(type);
   };
 
   return (
-    <section className="relative w-full overflow-hidden pt-4 pb-12 sm:pt-6 sm:pb-16 border-b border-[#1F293D]/80">
-      {/* Background radial ambient lights inspired by VoxClone reference */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[400px] bg-gradient-to-b from-[#38BDF8]/10 via-[#B5384F]/10 to-transparent blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-10 right-10 w-72 h-72 bg-[#2E9E5B]/10 blur-3xl pointer-events-none -z-10" />
+    <section className="relative w-full overflow-hidden bg-[#070B10] text-slate-100 pt-8 pb-16 lg:pt-14 lg:pb-24">
+      {/* Spotlight effect behind the central robot and buttons matching reference */}
+      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-gradient-radial from-slate-400/10 via-emerald-950/20 to-transparent blur-3xl pointer-events-none -z-0" />
+      <div className="absolute top-1/2 right-1/3 w-[350px] h-[350px] bg-[#2E9E5B]/10 blur-[100px] pointer-events-none -z-0" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-          {/* Left Column: Headline & Value Proposition (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
-            {/* Top pill badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-mono text-slate-300 mb-6 shadow-inner">
-              <span className="w-2 h-2 rounded-full bg-[#B5384F] animate-ping" />
-              <span className="text-[#38BDF8] font-bold">2026 Threat Shield:</span>
-              <span>AI Voice Lie Detector</span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Main Hero Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          {/* Left Column: Typography & CTAs (7 cols) */}
+          <div className="lg:col-span-7 flex flex-col items-start">
+            {/* Main Headline styled exactly like reference */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12]">
               Detect Any Voice Clone{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2E9E5B] via-emerald-400 to-[#38BDF8]">
-                with Human-Level Realism Instantly
+              <span className="text-slate-400 font-medium">with</span>
+              <br />
+              <span className="text-[#3E9B60]">
+                Human Level Realism Instantly
               </span>
             </h1>
 
-            {/* Rich problem & solution description */}
-            <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
-              In 2026, cybercriminals can clone your voice in seconds from a 10–30s YouTube clip or Instagram reel to impersonate kids in emergency calls (<em className="text-rose-300">&ldquo;Mom, I&apos;ve been in an accident, send money now&rdquo;</em>), spoof CEOs commanding wire transfers, or steal bank OTPs.
+            {/* Sub-headline description */}
+            <p className="mt-6 text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed font-normal">
+              Ideal for families, finance teams, and institutions looking to expose fake AI emergency calls, executive wire scams, and voice deepfakes before falling victim.
             </p>
 
-            <p className="mt-3 text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl">
-              <strong className="text-white">Sonara is the AI voice lie detector:</strong> analyzing acoustic biomarkers and vocoder phase artifacts in real time to reveal whether an incoming call was spoken by a real human or generated by an AI clone.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            {/* CTA Buttons matching reference: Solid green button + (▶) How it's Work */}
+            <div className="mt-8 flex flex-wrap items-center gap-5">
               <button
                 type="button"
                 onClick={onScrollToScanner}
-                className="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#2E9E5B] to-[#1F7542] hover:from-[#35b568] hover:to-[#24874c] text-white font-bold text-sm rounded-xl shadow-lg shadow-[#2E9E5B]/25 hover:shadow-[#2E9E5B]/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="px-7 py-3.5 bg-[#1E5936] hover:bg-[#267044] text-white font-semibold text-sm rounded-xl shadow-lg shadow-[#1E5936]/40 border border-[#2E9E5B]/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Radio className="w-4 h-4 text-white" />
-                <span>Start Voice Scan</span>
+                Get Started
               </button>
 
               <button
                 type="button"
                 onClick={onOpenHowItWorks}
-                className="flex items-center gap-2 px-5 py-3.5 bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-semibold text-sm rounded-xl transition-colors"
+                className="flex items-center gap-2.5 px-4 py-3.5 text-sm font-medium text-slate-200 hover:text-white transition-colors group"
               >
-                <Play className="w-4 h-4 text-[#38BDF8] fill-[#38BDF8]" />
-                <span>How It Works</span>
+                <div className="w-8 h-8 rounded-full border border-slate-400/80 group-hover:border-white flex items-center justify-center transition-colors">
+                  <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
+                </div>
+                <span>How it&apos;s Work</span>
               </button>
+            </div>
+
+            {/* Floating Audio Widgets positioned on lower-left matching reference layout */}
+            <div className="mt-12 flex flex-wrap sm:flex-nowrap items-center gap-4 w-full max-w-md">
+              {/* Card 1: Audio Player Card (Shopova marlin equivalent) */}
+              <div className="flex-1 bg-[#0D131C] border border-[#1B2738] rounded-2xl p-4 shadow-2xl relative group">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-semibold text-white truncate max-w-[150px]">
+                    {activeSampleType === 'cloned' ? 'Emergency Bail Scam' : 'Authentic Caller'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsLiked(!isLiked)}
+                    className="text-slate-400 hover:text-rose-400 transition-colors"
+                    aria-label="Save sample"
+                  >
+                    <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-rose-500 text-rose-500' : ''}`} />
+                  </button>
+                </div>
+
+                {/* Badges row: duration + bpm */}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#1E5936] text-emerald-300">
+                    3.04
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400">
+                    140bpm
+                  </span>
+                </div>
+
+                {/* Waveform Player */}
+                <div className="flex items-center gap-2.5 my-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsPlayingSample(!isPlayingSample)}
+                    className="w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 shrink-0"
+                    aria-label={isPlayingSample ? 'Pause' : 'Play'}
+                  >
+                    {isPlayingSample ? (
+                      <Pause className="w-3 h-3 fill-slate-200" />
+                    ) : (
+                      <Play className="w-3 h-3 fill-slate-200 ml-0.5" />
+                    )}
+                  </button>
+
+                  <div className="flex-1 overflow-hidden">
+                    <WaveformVisualizer
+                      isPlaying={isPlayingSample}
+                      color="#FFFFFF"
+                      barsCount={20}
+                      height={24}
+                    />
+                  </div>
+                </div>
+
+                {/* Sub-label footer */}
+                <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 pt-1 border-t border-slate-800/60 font-mono">
+                  <span>AI Voice</span>
+                  <span className={activeSampleType === 'cloned' ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}>
+                    {activeSampleType === 'cloned' ? 'Cloned Voice' : 'Real Voice'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Card 2: Volume & Meter Indicator Card */}
+              <div className="w-24 bg-[#0D131C] border border-[#1B2738] rounded-2xl p-3.5 flex flex-col justify-between shadow-2xl h-[120px]">
+                {/* Level meters matching reference graphic */}
+                <div className="flex items-end justify-between h-14 px-1 pt-1">
+                  {/* Left slider indicator */}
+                  <div className="relative h-full flex items-center justify-center w-3">
+                    <div className="w-0.5 h-full bg-slate-700 rounded-full relative">
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-2 h-4 bg-[#2E9E5B] rounded-sm" />
+                    </div>
+                  </div>
+
+                  {/* Dual LED Meter */}
+                  <div className="flex items-end gap-1 h-full">
+                    {/* Meter bar 1 */}
+                    <div className="w-1.5 h-full flex flex-col-reverse gap-0.5">
+                      {Array.from({ length: 9 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-full h-1 rounded-[1px] ${
+                            i < 6 ? 'bg-[#2E9E5B]' : i < 8 ? 'bg-amber-400' : 'bg-rose-500'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    {/* Meter bar 2 */}
+                    <div className="w-1.5 h-full flex flex-col-reverse gap-0.5">
+                      {Array.from({ length: 9 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-full h-1 rounded-[1px] ${
+                            i < 7 ? 'bg-white' : 'bg-slate-700'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom label */}
+                <div className="flex items-center gap-1 text-[10px] font-mono text-slate-400 pt-1 border-t border-slate-800/60">
+                  <Volume2 className="w-3 h-3 text-slate-400" />
+                  <span>Volume</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: Interactive Cyber Console (5 cols) matching VoxClone reference */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-            {/* Outer console frame */}
-            <div className="w-full max-w-md bg-gradient-to-b from-[#161F30] via-[#111827] to-[#0B0F17] border border-[#1F293D] rounded-3xl p-6 shadow-2xl relative overflow-hidden group">
-              {/* Top status header */}
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#1F293D]/80">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#38BDF8] animate-pulse" />
-                  <span className="text-xs font-mono font-bold tracking-wider uppercase text-slate-300">
-                    Acoustic Lie-Detector Unit
-                  </span>
-                </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-[#38BDF8] border border-slate-700">
-                  REAL-TIME 2026
-                </span>
-              </div>
-
-              {/* The Reference Dual Switches: Safe Green vs Cloned Red button */}
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                {/* SAFE / REAL BUTTON */}
+          {/* Right Column: The Reference Scene — The Two Push-Buttons & Robot Character (5 cols) */}
+          <div className="lg:col-span-5 flex items-center justify-center relative min-h-[380px] lg:min-h-[480px]">
+            {/* The Cinematic Stage with the Green & Red Hazard-Striped Buttons & Robot */}
+            <div className="relative w-full max-w-lg flex items-center justify-center">
+              {/* Dual Industrial Push-Buttons */}
+              <div className="flex items-center gap-4 z-10 mr-12 sm:mr-16">
+                {/* GREEN PUSH BUTTON with Hazard Diagonal Stripes */}
                 <button
                   type="button"
-                  onClick={() => {
-                    togglePreview('real');
-                    onQuickTestSample('Real');
-                  }}
+                  onClick={() => handleButtonPress('Real')}
                   disabled={isAnalyzing}
-                  className="flex flex-col items-center justify-center p-4 rounded-2xl bg-gradient-to-b from-[#0F2218] to-[#08150E] border-2 border-[#2E9E5B]/60 hover:border-[#2E9E5B] shadow-lg shadow-[#2E9E5B]/20 transition-all group/btn active:scale-95 text-center"
-                  title="Test an authentic biological human voice sample"
+                  className="group relative flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
+                  title="Test Real Human Voice"
                 >
-                  <div className="w-12 h-12 rounded-full bg-[#2E9E5B] flex items-center justify-center shadow-md shadow-[#2E9E5B]/50 mb-2.5 group-hover/btn:scale-105 transition-transform">
-                    <CheckCircle2 className="w-6 h-6 text-slate-900 stroke-[2.5]" />
+                  {/* Industrial Mount Plate with Hazard Stripes */}
+                  <div
+                    className="w-20 h-28 sm:w-24 sm:h-32 rounded-xl p-1.5 shadow-2xl flex items-center justify-center border border-emerald-500/40 relative overflow-hidden"
+                    style={{
+                      background: 'repeating-linear-gradient(45deg, #0d1a12, #0d1a12 8px, #1e3825 8px, #1e3825 16px)',
+                    }}
+                  >
+                    {/* Metal center faceplate */}
+                    <div className="w-full h-full bg-[#121E17] rounded-lg border border-[#2E9E5B]/40 flex items-center justify-center shadow-inner relative">
+                      {/* Push button actuator */}
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-b from-[#35b568] to-[#1a5a32] p-1 shadow-lg shadow-[#2E9E5B]/50 flex items-center justify-center group-hover:shadow-[#2E9E5B]/80 transition-shadow">
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#2E9E5B] border-2 border-emerald-300/60 shadow-inner flex items-center justify-center">
+                          <div className="w-3 h-3 rounded-full bg-white/40" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-xs font-bold text-white uppercase tracking-wider">
+                  <span className="text-[10px] font-mono font-bold uppercase text-emerald-400 mt-2">
                     Real Voice
                   </span>
-                  <span className="text-[10px] text-emerald-400 font-mono mt-0.5">
-                    99.1% Biological
-                  </span>
                 </button>
 
-                {/* CLONED / DANGER BUTTON */}
+                {/* RED PUSH BUTTON with Hazard Diagonal Stripes */}
                 <button
                   type="button"
-                  onClick={() => {
-                    togglePreview('cloned');
-                    onQuickTestSample('Cloned');
-                  }}
+                  onClick={() => handleButtonPress('Cloned')}
                   disabled={isAnalyzing}
-                  className="flex flex-col items-center justify-center p-4 rounded-2xl bg-gradient-to-b from-[#250F14] to-[#14070A] border-2 border-[#B5384F]/60 hover:border-[#B5384F] shadow-lg shadow-[#B5384F]/20 transition-all group/btn active:scale-95 text-center"
-                  title="Test an AI synthesized voice clone sample"
+                  className="group relative flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
+                  title="Test AI Cloned Voice"
                 >
-                  <div className="w-12 h-12 rounded-full bg-[#B5384F] flex items-center justify-center shadow-md shadow-[#B5384F]/50 mb-2.5 group-hover/btn:scale-105 transition-transform">
-                    <AlertTriangle className="w-6 h-6 text-white stroke-[2.5]" />
+                  {/* Industrial Mount Plate with Red Hazard Stripes */}
+                  <div
+                    className="w-20 h-28 sm:w-24 sm:h-32 rounded-xl p-1.5 shadow-2xl flex items-center justify-center border border-rose-500/40 relative overflow-hidden"
+                    style={{
+                      background: 'repeating-linear-gradient(45deg, #1c0d10, #1c0d10 8px, #3a161d 8px, #3a161d 16px)',
+                    }}
+                  >
+                    {/* Metal center faceplate */}
+                    <div className="w-full h-full bg-[#221215] rounded-lg border border-[#B5384F]/40 flex items-center justify-center shadow-inner relative">
+                      {/* Push button actuator */}
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-b from-[#d94863] to-[#731c2c] p-1 shadow-lg shadow-[#B5384F]/50 flex items-center justify-center group-hover:shadow-[#B5384F]/80 transition-shadow">
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#B5384F] border-2 border-rose-300/60 shadow-inner flex items-center justify-center">
+                          <div className="w-3 h-3 rounded-full bg-white/40" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-xs font-bold text-white uppercase tracking-wider">
+                  <span className="text-[10px] font-mono font-bold uppercase text-rose-400 mt-2">
                     Cloned Voice
-                  </span>
-                  <span className="text-[10px] text-rose-300 font-mono mt-0.5">
-                    98.4% Synthetic
                   </span>
                 </button>
               </div>
 
-              {/* Live Audio Monitor Card (inspired by left audio card in reference image) */}
-              <div className="bg-[#0B0F17] border border-[#1F293D] rounded-2xl p-4 flex flex-col gap-3">
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-white font-mono">
-                      {activePreviewType === 'cloned' ? 'Emergency_Kid_Scam.wav' : 'Authentic_Caller_Checkin.wav'}
-                    </span>
-                  </div>
-                  <span
-                    className={`font-mono font-bold text-[10px] px-2 py-0.5 rounded ${
-                      activePreviewType === 'cloned'
-                        ? 'bg-[#B5384F]/20 text-rose-300 border border-[#B5384F]/30'
-                        : 'bg-[#2E9E5B]/20 text-emerald-300 border border-[#2E9E5B]/30'
-                    }`}
-                  >
-                    {activePreviewType === 'cloned' ? 'AI CLONE ⚠️' : 'HUMAN ✅'}
-                  </span>
-                </div>
+              {/* The Robot Character pointing at the buttons (matching reference) */}
+              <div className="relative -ml-6 sm:-ml-10 z-20 pointer-events-none select-none">
+                <svg
+                  className="w-48 h-56 sm:w-60 sm:h-72 drop-shadow-2xl"
+                  viewBox="0 0 300 360"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Robot Head Body (White sphere) */}
+                  <circle
+                    cx="180"
+                    cy="140"
+                    r="85"
+                    fill="url(#robotWhiteGrad)"
+                    stroke="#D1D5DB"
+                    strokeWidth="3"
+                  />
 
-                {/* Animated Waveform Visualizer & Level Meter */}
-                <div className="flex items-center gap-3">
-                  <div className="flex-1">
-                    <WaveformVisualizer
-                      isPlaying={true}
-                      color={activePreviewType === 'cloned' ? '#B5384F' : '#2E9E5B'}
-                      barsCount={26}
-                      height={32}
-                    />
-                  </div>
+                  {/* Dual Antennas */}
+                  <path
+                    d="M140 60 L110 10 M210 60 L240 10"
+                    stroke="#E5E7EB"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                  />
+                  <rect x="105" y="5" width="10" height="12" rx="2" fill="#9CA3AF" />
+                  <rect x="235" y="5" width="10" height="12" rx="2" fill="#9CA3AF" />
 
-                  {/* Vertical Volume Meter (like in reference image) */}
-                  <div className="flex items-end gap-1 h-8 px-2 py-1 bg-slate-900 rounded-lg border border-slate-800">
-                    <div className="w-1.5 bg-[#2E9E5B] h-[65%] rounded-sm" />
-                    <div className="w-1.5 bg-[#F59E0B] h-[85%] rounded-sm" />
-                    <div className="w-1.5 bg-[#B5384F] h-[40%] rounded-sm" />
-                  </div>
-                </div>
+                  {/* Ear speaker cup */}
+                  <ellipse cx="260" cy="140" rx="14" ry="24" fill="#374151" stroke="#9CA3AF" strokeWidth="2" />
+                  <ellipse cx="260" cy="140" rx="8" ry="16" fill="#111827" />
 
-                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-800/80">
-                  <span>Spectral Vocoder Scan: Active</span>
-                  <span className="font-mono text-slate-300">Latency: 0.8s</span>
-                </div>
+                  {/* Main Eye / Optical Lens Cone facing left towards buttons */}
+                  <ellipse cx="110" cy="145" rx="30" ry="38" fill="#1F2937" stroke="#4B5563" strokeWidth="3" />
+                  <circle cx="105" cy="145" r="22" fill="#0B0F17" stroke="#9CA3AF" strokeWidth="2" />
+                  <circle cx="102" cy="145" r="14" fill="#030712" />
+                  <circle cx="100" cy="142" r="5" fill="#38BDF8" className="animate-pulse" />
+                  <circle cx="98" cy="140" r="2" fill="#FFFFFF" />
+
+                  {/* Neck and mechanical joints */}
+                  <path d="M165 220 L160 250 L195 250 L190 220" fill="#4B5563" />
+                  <circle cx="178" cy="255" r="16" fill="#1F2937" stroke="#9CA3AF" strokeWidth="2" />
+
+                  {/* Robot Body Torso */}
+                  <path
+                    d="M140 265 C140 265 120 300 130 350 L230 350 C240 300 220 265 220 265 Z"
+                    fill="url(#robotWhiteGrad)"
+                    stroke="#D1D5DB"
+                    strokeWidth="3"
+                  />
+
+                  {/* Arm & Hand pointing extended finger left at the push buttons */}
+                  <g className="animate-bounce" style={{ animationDuration: '3s' }}>
+                    {/* Shoulder */}
+                    <circle cx="130" cy="275" r="14" fill="#374151" />
+                    {/* Upper arm */}
+                    <path d="M125 280 L75 235" stroke="#E5E7EB" strokeWidth="12" strokeLinecap="round" />
+                    {/* Elbow joint */}
+                    <circle cx="75" cy="235" r="9" fill="#1F2937" stroke="#9CA3AF" strokeWidth="2" />
+                    {/* Forearm pointing to button */}
+                    <path d="M75 235 L35 220" stroke="#E5E7EB" strokeWidth="10" strokeLinecap="round" />
+                    {/* Wrist joint */}
+                    <circle cx="35" cy="220" r="7" fill="#374151" />
+                    {/* Pointing Finger */}
+                    <path d="M35 220 L8 215" stroke="#9CA3AF" strokeWidth="5" strokeLinecap="round" />
+                    {/* Glowing fingertip touch sensor */}
+                    <circle cx="8" cy="215" r="4" fill="#38BDF8" className="animate-ping" />
+                    <circle cx="8" cy="215" r="3" fill="#FFFFFF" />
+                  </g>
+
+                  {/* Gradients */}
+                  <defs>
+                    <radialGradient id="robotWhiteGrad" cx="30%" cy="30%" r="70%">
+                      <stop offset="0%" stopColor="#FFFFFF" />
+                      <stop offset="65%" stopColor="#E5E7EB" />
+                      <stop offset="100%" stopColor="#9CA3AF" />
+                    </radialGradient>
+                  </defs>
+                </svg>
               </div>
-
-              {/* Quick instruction hint */}
-              <p className="text-[11px] text-center text-slate-400 mt-3 font-mono">
-                Click green or red button above to simulate live voice classification
-              </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Feature Strip (matching reference image footer strip) */}
-        <div className="mt-12 pt-8 border-t border-[#1F293D]/80">
-          <div className="bg-[#111827]/70 border border-[#1F293D] rounded-2xl p-4 sm:p-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#1F293D]">
-              <div className="flex flex-col items-center sm:items-start text-center sm:text-left px-2">
-                <span className="text-xs sm:text-sm font-bold text-white">
-                  Real-Time Detection
+        {/* Bottom Feature Strip — Matching reference 4-column divided container */}
+        <div className="mt-14 lg:mt-20">
+          <div className="bg-[#0A0F17]/90 border border-[#162032] rounded-2xl p-4 sm:p-6 shadow-xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 divide-y lg:divide-y-0 lg:divide-x divide-[#162032]">
+              {/* Item 1 */}
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:px-4 pt-2 lg:pt-0">
+                <span className="text-sm font-bold text-white tracking-wide">
+                  Real-Time
                 </span>
-                <span className="text-[11px] text-slate-400 mt-0.5">
-                  &lt;1.2s inference on FastAPI
-                </span>
-              </div>
-
-              <div className="flex flex-col items-center sm:items-start text-center sm:text-left px-2 pt-3 sm:pt-0">
-                <span className="text-xs sm:text-sm font-bold text-white">
-                  10–30s Audio Fingerprint
-                </span>
-                <span className="text-[11px] text-slate-400 mt-0.5">
-                  Micro-breath & pitch analysis
+                <span className="text-xs text-slate-400 mt-1">
+                  Voice Scan (&lt;1.2s Latency)
                 </span>
               </div>
 
-              <div className="flex flex-col items-center sm:items-start text-center sm:text-left px-2 pt-3 sm:pt-0">
-                <span className="text-xs sm:text-sm font-bold text-white">
-                  Scam Prevention
+              {/* Item 2 */}
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:px-6 pt-4 lg:pt-0">
+                <span className="text-sm font-bold text-white tracking-wide">
+                  Supports All Formats
                 </span>
-                <span className="text-[11px] text-slate-400 mt-0.5">
-                  Family emergency & wire fraud
+                <span className="text-xs text-slate-400 mt-1">
+                  .WAV, .MP3, .FLAC Audio
                 </span>
               </div>
 
-              <div className="flex flex-col items-center sm:items-start text-center sm:text-left px-2 pt-3 sm:pt-0">
-                <span className="text-xs sm:text-sm font-bold text-white">
-                  100% In-Memory Analysis
+              {/* Item 3 */}
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:px-6 pt-4 lg:pt-0">
+                <span className="text-sm font-bold text-white tracking-wide">
+                  Voice Customization
                 </span>
-                <span className="text-[11px] text-slate-400 mt-0.5">
-                  Zero biometric voice retention
+                <span className="text-xs text-slate-400 mt-1">
+                  Pitch, Shimmer, Micro-Breaths
+                </span>
+              </div>
+
+              {/* Item 4 */}
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:px-6 pt-4 lg:pt-0">
+                <span className="text-sm font-bold text-white tracking-wide">
+                  100% Secure
+                </span>
+                <span className="text-xs text-slate-400 mt-1">
+                  &amp; Private In-Memory Analysis
                 </span>
               </div>
             </div>

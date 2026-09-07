@@ -1,5 +1,5 @@
 import React from 'react';
-import { Radio, ShieldAlert, BarChart3, HelpCircle, Activity, Sparkles } from 'lucide-react';
+import { Mic, Radio, Sparkles } from 'lucide-react';
 
 export type ActiveTab = 'scan' | 'guardian' | 'dashboard' | 'about';
 
@@ -19,142 +19,128 @@ export const Navbar: React.FC<NavbarProps> = ({
   apiOnline,
 }) => {
   return (
-    <header className="sticky top-0 z-50 bg-[#0B0F17]/90 backdrop-blur-md border-b border-[#1F293D]">
+    <header className="sticky top-0 z-50 bg-[#070B10]/95 backdrop-blur-md border-b border-[#162032]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18">
-          {/* Brand Logo & Tagline */}
+        <div className="flex items-center justify-between h-20">
+          {/* Logo matching reference: Green circular badge with mic + brand name */}
           <div
-            className="flex items-center gap-3 cursor-pointer group select-none"
+            className="flex items-center gap-3 cursor-pointer select-none group"
             onClick={() => onTabChange('scan')}
           >
-            {/* Sonar Radar Icon */}
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 border border-[#1F293D] group-hover:border-[#B5384F]/50 transition-colors">
-              <span className="absolute w-2.5 h-2.5 rounded-full bg-[#B5384F]" />
-              <span className="absolute w-6 h-6 rounded-full border border-[#B5384F]/40 animate-ping" />
-              <span className="absolute w-8 h-8 rounded-full border border-slate-700/50" />
-              <Radio className="w-5 h-5 text-slate-300 relative z-10" />
+            <div className="w-10 h-10 rounded-full bg-[#1E5936] flex items-center justify-center shadow-lg shadow-[#1E5936]/40 border border-[#2E9E5B]/40 group-hover:scale-105 transition-transform">
+              <Mic className="w-5 h-5 text-white" />
             </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xl font-extrabold tracking-tight text-white font-sans">
-                  Sonara
-                </span>
-                <span className="text-[10px] font-semibold font-mono uppercase px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                  SIH 2026
-                </span>
-              </div>
-              <p className="text-[11px] font-medium tracking-wide text-slate-400">
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold tracking-tight text-white font-sans">
+                Sonara
+              </span>
+              <span className="hidden sm:inline-block text-[10px] font-mono text-emerald-400 bg-[#1E5936]/30 border border-[#2E9E5B]/30 px-2 py-0.5 rounded-full">
                 Hear What&apos;s Real
-              </p>
+              </span>
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-[#111827]/80 p-1 rounded-xl border border-[#1F293D]">
+          {/* Centered Navigation Links matching reference */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             <button
               type="button"
               onClick={() => onTabChange('scan')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                activeTab === 'scan'
-                  ? 'bg-slate-800 text-white shadow-sm border border-slate-700'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+              className={`transition-colors ${
+                activeTab === 'scan' ? 'text-white font-semibold' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Activity className="w-3.5 h-3.5 text-[#38BDF8]" />
+              Home
+            </button>
+            <button
+              type="button"
+              onClick={() => onTabChange('scan')}
+              className={`transition-colors ${
+                activeTab === 'scan' ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-white'
+              }`}
+            >
               Voice Scan
             </button>
-
             <button
               type="button"
               onClick={() => onTabChange('guardian')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                activeTab === 'guardian'
-                  ? 'bg-slate-800 text-white shadow-sm border border-slate-700'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+              className={`transition-colors ${
+                activeTab === 'guardian' ? 'text-white font-semibold' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <ShieldAlert className="w-3.5 h-3.5 text-[#B5384F]" />
               Guardian Mode
             </button>
-
             <button
               type="button"
               onClick={() => onTabChange('dashboard')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                activeTab === 'dashboard'
-                  ? 'bg-slate-800 text-white shadow-sm border border-slate-700'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+              className={`transition-colors ${
+                activeTab === 'dashboard' ? 'text-white font-semibold' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <BarChart3 className="w-3.5 h-3.5 text-[#2E9E5B]" />
-              Security Intel
+              Intel Logs
             </button>
-
             <button
               type="button"
               onClick={() => onTabChange('about')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                activeTab === 'about'
-                  ? 'bg-slate-800 text-white shadow-sm border border-slate-700'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+              className={`transition-colors ${
+                activeTab === 'about' ? 'text-white font-semibold' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <HelpCircle className="w-3.5 h-3.5 text-slate-400" />
               How It Works
             </button>
           </nav>
 
-          {/* Right Controls: Demo Toggle & Backend Status */}
-          <div className="flex items-center gap-2.5">
-            {/* Live Clone Demo Mode Pill */}
+          {/* Right actions matching reference: Log in + Green Sign Up / Scan button */}
+          <div className="flex items-center gap-3">
+            {/* Stage Demo Toggle Pill */}
             <button
               type="button"
               onClick={onToggleDemoMode}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+              className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                 isDemoMode
-                  ? 'bg-[#B5384F]/15 border-[#B5384F]/60 text-rose-300 shadow-[0_0_12px_rgba(181,56,79,0.3)]'
+                  ? 'bg-[#B5384F]/20 border-[#B5384F]/50 text-rose-300'
                   : 'bg-slate-900 border-[#1F293D] text-slate-400 hover:text-slate-200'
               }`}
-              title="Stage Demo Mode: Enables side-by-side cloned vs original speech comparison"
+              title="Stage Demo Mode"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#B5384F]" />
-              <span className="hidden sm:inline">Stage Demo</span>
-              <span className={`w-1.5 h-1.5 rounded-full ${isDemoMode ? 'bg-[#B5384F]' : 'bg-slate-600'}`} />
+              <span>Demo Deck</span>
             </button>
 
-            {/* FastAPI Status Indicator */}
-            <div
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-900 border border-[#1F293D] rounded-lg text-[11px] font-mono"
-              title={apiOnline ? 'FastAPI /predict is reachable' : 'FastAPI is in offline / simulated fallback mode'}
+            {/* Log in Button */}
+            <button
+              type="button"
+              onClick={() => onTabChange('dashboard')}
+              className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-lg transition-colors"
             >
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  apiOnline ? 'bg-[#2E9E5B] shadow-[0_0_8px_#2E9E5B]' : 'bg-amber-400 shadow-[0_0_8px_#F59E0B]'
-                }`}
-              />
-              <span className="hidden lg:inline text-slate-300">
-                {apiOnline ? 'API Online' : 'Simulated'}
-              </span>
-            </div>
+              Log in
+            </button>
+
+            {/* Green Primary Action Button (styled exactly like Sign Up in reference) */}
+            <button
+              type="button"
+              onClick={() => onTabChange('scan')}
+              className="px-5 py-2 text-xs font-bold text-white bg-[#1E5936] hover:bg-[#267044] border border-[#2E9E5B]/40 rounded-lg shadow-md shadow-[#1E5936]/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Scan Voice
+            </button>
           </div>
         </div>
 
-        {/* Mobile Navigation Row */}
-        <div className="md:hidden flex items-center justify-around py-2 border-t border-[#1F293D]/60">
+        {/* Mobile Navigation Strip */}
+        <div className="md:hidden flex items-center justify-around py-2.5 border-t border-[#162032]">
           <button
             type="button"
             onClick={() => onTabChange('scan')}
-            className={`text-xs py-1 px-2.5 rounded-md font-medium ${
-              activeTab === 'scan' ? 'bg-slate-800 text-white' : 'text-slate-400'
+            className={`text-xs py-1 px-3 rounded-md font-medium ${
+              activeTab === 'scan' ? 'bg-[#1E5936] text-white' : 'text-slate-400'
             }`}
           >
-            Scan
+            Home
           </button>
           <button
             type="button"
             onClick={() => onTabChange('guardian')}
-            className={`text-xs py-1 px-2.5 rounded-md font-medium ${
+            className={`text-xs py-1 px-3 rounded-md font-medium ${
               activeTab === 'guardian' ? 'bg-slate-800 text-white' : 'text-slate-400'
             }`}
           >
@@ -163,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={() => onTabChange('dashboard')}
-            className={`text-xs py-1 px-2.5 rounded-md font-medium ${
+            className={`text-xs py-1 px-3 rounded-md font-medium ${
               activeTab === 'dashboard' ? 'bg-slate-800 text-white' : 'text-slate-400'
             }`}
           >
@@ -172,7 +158,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={() => onTabChange('about')}
-            className={`text-xs py-1 px-2.5 rounded-md font-medium ${
+            className={`text-xs py-1 px-3 rounded-md font-medium ${
               activeTab === 'about' ? 'bg-slate-800 text-white' : 'text-slate-400'
             }`}
           >
