@@ -1,9 +1,9 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { SupabaseScanRow, SupabaseUserRow, SupabaseAlertRow, ScanResult, GuardianContact, GuardianAlertRecord } from '../types';
 import { INITIAL_SCANS, INITIAL_CONTACTS, INITIAL_ALERTS } from './mockData';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
@@ -36,8 +36,8 @@ export interface Database {
 }
 
 // Initialize Supabase Client (if keys provided, otherwise safe dummy)
-export const supabase: SupabaseClient<Database> | null = isSupabaseConfigured
-  ? createClient<Database>(supabaseUrl, supabaseAnonKey)
+export const supabase: any = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
 // Local storage backup keys for seamless hackathon demo resilience
@@ -95,13 +95,15 @@ export async function saveScan(scan: ScanResult): Promise<void> {
   // 1. Try Supabase
   if (supabase) {
     try {
-      await supabase.from('scans').insert({
-        id: scan.id,
-        audio_name: scan.audioName,
-        result: scan.result,
-        confidence: scan.confidence,
-        timestamp: scan.timestamp,
-      });
+      await supabase.from('scans').insert([
+        {
+          id: scan.id,
+          audio_name: scan.audioName,
+          result: scan.result,
+          confidence: scan.confidence,
+          timestamp: scan.timestamp,
+        },
+      ]);
     } catch (err) {
       console.warn('Could not insert scan to Supabase:', err);
     }
@@ -122,11 +124,13 @@ export async function saveScan(scan: ScanResult): Promise<void> {
 export async function logAlert(alert: GuardianAlertRecord): Promise<void> {
   if (supabase) {
     try {
-      await supabase.from('alerts').insert({
-        id: alert.id,
-        scan_id: alert.scan_id,
-        status: alert.status,
-      });
+      await supabase.from('alerts').insert([
+        {
+          id: alert.id,
+          scan_id: alert.scan_id,
+          status: alert.status,
+        },
+      ]);
     } catch (err) {
       console.warn('Could not insert alert to Supabase:', err);
     }

@@ -195,6 +195,7 @@ export function App() {
                 onStartAnalysis={handleStartAnalysis}
                 errorMessage={errorMessage}
                 onClearError={() => setErrorMessage(null)}
+                onOpenHowItWorks={() => setActiveTab('about')}
               />
             )}
           </>
